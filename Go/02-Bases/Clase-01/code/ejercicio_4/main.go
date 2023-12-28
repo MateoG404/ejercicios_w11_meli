@@ -18,4 +18,8 @@ func main() {
 	firstName := "Mary"
 
 	fmt.Println(lastName, age, boolean, salary, firstName)
+
+	if sum := age + int(salary); sum > 100 {
+		fmt.Println("La suma es mayor a 100")
+	}
 }
