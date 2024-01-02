@@ -12,11 +12,9 @@ func impuestoSalario(salario float64) float64 {
 }
 
 func main() {
-
 	var salario float64
 	fmt.Println("Ingrese el salario de su empleado:")
 	fmt.Scan(&salario)
 
 	fmt.Println("El salario del empleado es:", impuestoSalario(salario))
-
 }
