@@ -18,4 +18,5 @@ func main() {
 	fmt.Scan(&salario)
 
 	fmt.Println("El salario del empleado es:", impuestoSalario(salario))
+
 }
