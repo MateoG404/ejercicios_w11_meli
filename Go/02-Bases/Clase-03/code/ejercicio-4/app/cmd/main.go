@@ -1,7 +1,7 @@
 package main
 
 import (
-	"app/internal" // Import the missing package
+	// Import the missing package
 	"fmt"
 )
 
