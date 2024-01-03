@@ -3,9 +3,11 @@ package main
 import "fmt"
 
 func impuestoSalario(salario float64) float64 {
-	if salario > 50000 {
+	if salario > 50000 && salario <= 150000 {
+		fmt.Println("entro22")
 		return salario - (salario * 0.17)
 	} else if salario > 150000 {
+		fmt.Println("entro")
 		return salario - (salario * 0.27)
 	}
 	return salario
