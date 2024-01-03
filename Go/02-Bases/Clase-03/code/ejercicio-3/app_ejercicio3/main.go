@@ -11,6 +11,7 @@ func calculoSalario(minutesMonth int, category string) (salary float64) {
 		salary = float64((hours * 1500))
 		salary += (salary * 0.2)
 	case "A":
+		fmt.Println("hours", hours)
 		salary = float64((hours * 3000))
 		salary += (salary * 0.5)
 	default:
