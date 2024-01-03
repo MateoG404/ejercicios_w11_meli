@@ -5,5 +5,6 @@ use (
 	./Go/02-Bases/Clase-03/code/ejercicio-3
 	./Go/02-Bases/Clase-03/code/ejercicio-5
 	./Go/02-Bases/Clase-03/notes/content
+	./Go/02-Bases/Clase-04/code/ejercicio-1
 	./Go/02-Bases/Clase-04/notes/structs
 )

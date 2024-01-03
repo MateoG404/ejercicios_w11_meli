@@ -9,6 +9,14 @@ import (
 func main() {
 	fmt.Println("Using structs")
 
+	// Usando el operador new
+	p := new(int)      // p es un puntero a un int
+	*p = 3             // establece el valor en la dirección de memoria a la que apunta p a 3
+	fmt.Println(*p, p) // imprime el valor en la dirección de memoria a la que apunta p
+	// Usando el operador &
+	n := 34
+	p = &n
+
 	// Create a new person
 	personA := internal.Person{FirstNmame: "Mateo", LastName: "Gutierrez", CellPhone: "123456789", Address: "Street 123", Password: "s"}
 	personB := internal.Person{FirstNmame: "Camila", LastName: "Zambrano", CellPhone: "123456789", Password: "s"}
