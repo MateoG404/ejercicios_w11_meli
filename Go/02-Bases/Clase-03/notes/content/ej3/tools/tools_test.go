@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestElementAtIndex_ExistentIndex(t *testing.T) {
@@ -33,7 +35,7 @@ func TestElementAtIndex_NonExistingIndex(t *testing.T) {
 	result, err := tools.ElementAtIndex(slice, idx)
 
 	// assert
-	require.Error(t, err)
+	assert.Error(t, err)
 	require.ErrorIs(t, err, tools.ErrIndexOutOfRange)
 	require.EqualError(t, err, tools.ErrIndexOutOfRange.Error())
 	require.Equal(t, expected, result)
