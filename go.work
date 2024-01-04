@@ -9,6 +9,7 @@ use (
 	./Go/02-Bases/Clase-04/code/ejercicio-2
 	./Go/02-Bases/Clase-04/notes/structs
 	./Go/02-Bases/Clase-05/code/ejercicio-1
+	./Go/02-Bases/Clase-05/code/ejercicio-2
 	./Go/02-Bases/Clase-05/notes/errors
 	./Go/02-Bases/Clase-05/notes/interfaces
 )
