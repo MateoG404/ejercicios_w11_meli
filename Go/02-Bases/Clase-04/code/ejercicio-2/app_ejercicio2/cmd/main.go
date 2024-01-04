@@ -14,6 +14,5 @@ func main() {
 	employee := internal.Employee{ID: 1, Position: "Software Developer", Person: person}
 	// Print the employee
 	fmt.Println("Nuestro nuevo empleado es :")
-	fmt.Println()
 	employee.PrintEmployee()
 }
