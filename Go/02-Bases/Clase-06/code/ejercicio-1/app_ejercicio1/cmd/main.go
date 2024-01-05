@@ -1,3 +1,4 @@
+// Script created to solve the excerise 1 of the class Panic & Defer in Go
 package main
 
 import (
@@ -7,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Inicio del programa para leer daros del estudio contable ")
+	fmt.Println("Inicio del programa para leer datos del estudio contable ")
 	// Defer if the file doesnt exist
 	defer fmt.Println("Ejecucion Finalizada")
 	// Read the file

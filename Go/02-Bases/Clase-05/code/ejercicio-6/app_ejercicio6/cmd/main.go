@@ -1,3 +1,4 @@
+// Solution for the exercise #5 of the class Errors
 package main
 
 import (
