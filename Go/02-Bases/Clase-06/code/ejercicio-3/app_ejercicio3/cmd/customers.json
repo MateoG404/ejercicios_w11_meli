@@ -1,0 +1,26 @@
+[
+    {
+        "file_name": "customers.json",
+        "file": null,
+        "name": "Mateo",
+        "id": "123",
+        "phone_number": 123456789,
+        "home_number": 987654321
+    },
+    {
+        "file_name": "customers.json",
+        "file": null,
+        "name": "Katherine",
+        "id": "456",
+        "phone_number": 234567890,
+        "home_number": 876543210
+    },
+    {
+        "file_name": "customers.json",
+        "file": null,
+        "name": "Carlos",
+        "id": "789",
+        "phone_number": 345678901,
+        "home_number": 765432109
+    }
+]
