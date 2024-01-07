@@ -2,24 +2,24 @@
 package internal
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
 	"github.com/fatih/color"
 )
 
 // Global variable to store if a panic occurs
 var (
-	panicErros = false
+	PanicErros = false
 	red        = color.New(color.FgRed).SprintFunc()
 )
 
 // Function to update the panic errors to true if a panic occurs
 func updatePanicErros() {
-	panicErros = true
+	PanicErros = true
 }
 
 // Client struct that implements the clients information
@@ -48,27 +48,35 @@ func NewClient(fileName string, name string, id string, phoneNumber int, homeNum
 // Verify method that verifies if the client exists in the file
 func (c Client) VerifyClientFile() bool {
 	// Defers
-	defer updatePanicErros()
+	// Defer to run if there is a panic
+	defer func() {
+		if r := recover(); r != nil {
+			updatePanicErros()
+		}
+	}()
+
 	// Verify if the file exists
 	file, ok := c.VerifyFile()
 	if ok {
+		// Defer file.Close() to close the file when the function ends
+		defer func() {
+			if err := file.Close(); err != nil {
+				panic(red(err))
+			}
+		}()
 
-		// Read the file until the end to find the client
-
-		reader, err := io.ReadAll(file)
-		fmt.Println(file)
-		if err != nil {
-			panic(errors.New(red("The file could not ddddsbe read")))
+		// Decode the JSON file into a slice of Client
+		var clients []Client
+		decoder := json.NewDecoder(file)
+		if err := decoder.Decode(&clients); err != nil && err != io.EOF {
+			panic(errors.New(red("The file could not be read")))
 		}
 
-		// Convert the file to string
-		fileString := string(reader)
-		fmt.Println("acaaaaa")
-
-		fmt.Println(fileString)
-		// Search the client in the file
-		if strings.Contains(fileString, c.ID) {
-			return true
+		// Search for the client ID in the slice of Client
+		for _, client := range clients {
+			if client.ID == c.ID {
+				return true
+			}
 		}
 	}
 	return false
@@ -76,29 +84,28 @@ func (c Client) VerifyClientFile() bool {
 
 // VerifyFile is a method created to verify if the file exists
 func (c Client) VerifyFile() (*os.File, bool) {
+	// Defer section
+	defer func() {
+		// If a panic occurs, the file will be closed and updated the panic errors to true
+		if r := recover(); r != nil {
+			updatePanicErros()
+			fmt.Println("Panic occurred:", r)
+		}
+	}()
 
 	// Open the file
 	file, err := os.Open(c.FileName)
-
-	// Check if there was an error opening the file
 	if err != nil {
-		fmt.Println("aca")
+		// If there was an error opening the file or if the file does not exist, panic
 		panic(errors.New(red("The indicated file was not found or is damaged")))
 	}
 
-	// Defer file.Close()
+	// If the file was opened successfully, close it when the function ends
 	defer func() {
 		if err := file.Close(); err != nil {
 			panic(red(err))
 		}
 	}()
-
-	defer updatePanicErros()
-
-	// Check if the file exists if not throw a panic
-	if err != nil {
-		panic("The indicated file was not found or is damaged")
-	}
 
 	return file, true
 }
