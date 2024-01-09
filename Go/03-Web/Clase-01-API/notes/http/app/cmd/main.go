@@ -17,7 +17,8 @@ var (
 func main() {
 	fmt.Println(green("Servidor iniciado"))
 
-	// Create the cases  for the handlerTest
+	// 1. Create the cases  for the handlerTest
+
 	handlerTest := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(blue("Saludos desde el endpoint prueba"))
 		// Escribe en el writer para retornarlo en el response
@@ -34,12 +35,18 @@ func main() {
 
 		}
 	}
-	// Register the funcionalities for the handlerTest
+
+	// _________________________________________________________
+
+	// 2. Register the funcionalities for the handlerTest
 	http.HandleFunc("/prueba", handlerTest)
 
-	// Register a second handler
+	// 2. Register a second handler
 	http.HandleFunc("/casos", handlerCases)
-	// Start the server
+
+	// _________________________________________________________
+
+	// 3. Start the server
 	err := http.ListenAndServe(":8080", nil)
 
 	if err != nil {
