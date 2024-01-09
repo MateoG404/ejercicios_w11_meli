@@ -14,4 +14,5 @@ use (
 	./Go/02-Bases/Clase-05/notes/errors
 	./Go/02-Bases/Clase-05/notes/interfaces
 	./Go/02-Bases/Clase-06/code/ejercicio-3
+	./Go/02-Bases/DesafioCierre/desafio-go-bases
 )
