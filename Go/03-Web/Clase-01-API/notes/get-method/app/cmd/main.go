@@ -66,7 +66,7 @@ func main() {
 			filteredPeople = people
 		}
 
-		// Filtrar por edad si se proporciona
+		// Filtrar por edad si se proporciona🤯
 		if ageFilterStr != "" {
 			ageFilter, err := strconv.Atoi(ageFilterStr)
 			if err != nil {
