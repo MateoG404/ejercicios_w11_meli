@@ -38,7 +38,7 @@ func main() {
 				http.Error(w, "Error reading the body", http.StatusInternalServerError)
 				return
 			}
-			// Return a greeting message
+			// Return a greeting message using the first and last name of the person
 			fmt.Fprintf(w, "Hello %s %s", p.FirstName, p.LastName)
 		// Return an error if the method is not allowed
 		default:
