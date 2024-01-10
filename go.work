@@ -18,5 +18,6 @@ use (
 	./Go/03-Web/Clase-01-API/code/ejercicio-2
 	./Go/03-Web/Clase-01-API/code/ejercicio_1
 	./Go/03-Web/Clase-01-API/notes/chi
+	./Go/03-Web/Clase-01-API/notes/context
 	./Go/03-Web/Clase-01-API/notes/http
 )
