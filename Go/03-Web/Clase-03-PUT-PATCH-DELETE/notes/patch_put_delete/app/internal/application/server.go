@@ -53,7 +53,7 @@ func (s *Server) Run() error {
 	router.Post("/products", hd.CreateProduct)
 
 	// - PUT /products/{id}
-	//router.Put("/products/{id}", hd.UpdateProduct)
+	router.Put("/products/{id}", hd.UpdateProductById)
 
 	// - PATCH /products/{id}
 	//router.Patch("/products/{id}", hd.UpdateProduct)

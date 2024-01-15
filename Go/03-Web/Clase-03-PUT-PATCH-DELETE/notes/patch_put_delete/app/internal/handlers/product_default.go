@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"net/http"
 	service "patch_put_delete/app/internal/service"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 )
 
 // Create the struct for the handler
@@ -89,39 +92,76 @@ func (h *ProductDefaultHandler) CreateProduct(w http.ResponseWriter, r *http.Req
 }
 
 // Get a product by id handler
-
 func (h *ProductDefaultHandler) GetProductById(w http.ResponseWriter, r *http.Request) {
 	// Get the request
 
-	// verify if the request is valid
+	// verify if the rid is valid
 
-	body := RequestJSON{}
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	idstr := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idstr)
+	fmt.Println("idstr", idstr, "id", id, "err", err)
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("invalid request body"))
+		w.Write([]byte("invalid request body 1"))
 		return
 	}
-
 	// Verify if the id is valid
 
-	if body.ID == 0 {
+	if id == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("invalid request body"))
+		w.Write([]byte("invalid request body 2"))
 	}
 
 	// Process
 
 	// Get the product by id
 
-	product, err := h.s.GetProductById(body.ID)
+	product, err := h.s.GetProductById(id)
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("invalid request body 3"))
+		return
+	}
+
+	// Return the response
+	fmt.Println(product)
+	// marshal body to json
+	bytes, err := json.Marshal(product)
+	if err != nil {
+		// default error
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("invalid request body 4 "))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(bytes)
+}
+
+// Update a product by id handler
+func (h *ProductDefaultHandler) UpdateProductById(w http.ResponseWriter, r *http.Request) {
+	// REQUEST
+	// Verify the input
+	var body RequestJSON
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("invalid request body"))
 		return
 	}
 
-	// Return the response
+	// PROCESS
+
+	// Update the product by id
+
+	product, err := h.s.UpdateProduct(body.ID, body.Name, body.Description, body.Price)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(r.ParseForm().Error()))
+		return
+	}
+	// RESPONSE
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 
 	// marshal body to json
 	bytes, err := json.Marshal(product)
@@ -131,7 +171,6 @@ func (h *ProductDefaultHandler) GetProductById(w http.ResponseWriter, r *http.Re
 		w.Write([]byte("invalid request body"))
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 	w.Write(bytes)
+
 }

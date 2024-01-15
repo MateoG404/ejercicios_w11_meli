@@ -95,3 +95,35 @@ func (p *ProductService) GetProductById(id int) (internal.Product, error) {
 	}
 	return product, nil
 }
+
+// Update a product
+func (p *ProductService) UpdateProduct(id int, name string, description string, price float64) (internal.Product, error) {
+	// Bussiness logic
+	// -Validate the input data
+
+	if ok := p.ValidateInputData(id, name, description, price); ok != nil {
+		return internal.Product{}, ok
+	}
+
+	// Verify if the product exists
+
+	_, err := p.db.GetProductById(id)
+	// If the product doesn't exists, return an error
+	if errors.Is(err, repository.ErrProductNotFound) {
+		return internal.Product{}, repository.ErrProductNotFound
+	}
+
+	// Update the product
+	product, err := p.db.UpdateOrCreate(internal.Product{
+		ID:          id,
+		Name:        name,
+		Description: description,
+		Price:       price,
+	})
+	if err != nil {
+		return internal.Product{}, err
+	}
+
+	// Return the product for the body response
+	return product, nil
+}
