@@ -79,3 +79,19 @@ func (p *ProductService) CreateProduct(id int, name string, description string, 
 }
 
 // Get a product by id
+
+func (p *ProductService) GetProductById(id int) (internal.Product, error) {
+	// Bussiness logic
+	// -Validate the input data
+
+	if id < 0 {
+		return internal.Product{}, repository.ErrInvalidID
+	}
+
+	// Return the product
+	product, err := p.db.GetProductById(id)
+	if err != nil {
+		return internal.Product{}, err
+	}
+	return product, nil
+}

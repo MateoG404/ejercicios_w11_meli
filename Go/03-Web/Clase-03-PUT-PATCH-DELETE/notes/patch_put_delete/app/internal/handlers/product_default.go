@@ -87,3 +87,51 @@ func (h *ProductDefaultHandler) CreateProduct(w http.ResponseWriter, r *http.Req
 
 	w.Write(bytes)
 }
+
+// Get a product by id handler
+
+func (h *ProductDefaultHandler) GetProductById(w http.ResponseWriter, r *http.Request) {
+	// Get the request
+
+	// verify if the request is valid
+
+	body := RequestJSON{}
+
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("invalid request body"))
+		return
+	}
+
+	// Verify if the id is valid
+
+	if body.ID == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("invalid request body"))
+	}
+
+	// Process
+
+	// Get the product by id
+
+	product, err := h.s.GetProductById(body.ID)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("invalid request body"))
+		return
+	}
+
+	// Return the response
+
+	// marshal body to json
+	bytes, err := json.Marshal(product)
+	if err != nil {
+		// default error
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("invalid request body"))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(bytes)
+}

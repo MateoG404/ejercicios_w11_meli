@@ -46,7 +46,7 @@ func (s *Server) Run() error {
 	// Configuration new endpoints
 
 	// - GET /products/{id}
-	//router.Get("/products/{id}", hd.GetProduct)
+	router.Get("/products/{id}", hd.GetProductById)
 
 	// - POST /products
 
