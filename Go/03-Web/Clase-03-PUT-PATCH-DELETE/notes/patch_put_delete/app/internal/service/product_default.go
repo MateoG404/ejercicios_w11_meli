@@ -127,3 +127,24 @@ func (p *ProductService) UpdateProduct(id int, name string, description string, 
 	// Return the product for the body response
 	return product, nil
 }
+
+func (p *ProductService) PatchProduct(product internal.Product) (err error) {
+	// Bussiness logic
+	// -Validate the input data
+	// Get the existing product
+
+	id := product.ID
+	existingProduct, err := p.db.GetProductById(id)
+	if err != nil {
+		return err
+	}
+
+	// Update the existing product
+	p.db.UpdateOrCreate(internal.Product{
+		ID:          existingProduct.ID,
+		Name:        product.Name,
+		Description: product.Description,
+		Price:       product.Price,
+	})
+	return
+}

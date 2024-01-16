@@ -56,7 +56,7 @@ func (s *Server) Run() error {
 	router.Put("/products/{id}", hd.UpdateProductById)
 
 	// - PATCH /products/{id}
-	//router.Patch("/products/{id}", hd.UpdateProduct)
+	router.Patch("/products/{id}", hd.UpdateProductByIdPatch)
 	// run server
 	// run server
 	err := http.ListenAndServe(s.address, router)

@@ -19,10 +19,18 @@ type ProductDefaultHandler struct {
 
 // Struct for the request
 type RequestJSON struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
+	ID          *int     `json:"id"`
+	Name        *string  `json:"name"`
+	Description *string  `json:"description"`
+	Price       *float64 `json:"price"`
+}
+
+// Struct for the patch request
+type RequestJSONPatch struct {
+	ID          *int     `json:"id"`
+	Name        *string  `json:"name"`
+	Description *string  `json:"description"`
+	Price       *float64 `json:"price"`
 }
 
 // Struct for the response
@@ -59,7 +67,7 @@ func (h *ProductDefaultHandler) CreateProduct(w http.ResponseWriter, r *http.Req
 
 	// Validate all the data are given in the request body by the user
 
-	if body.ID == 0 || body.Name == "" || body.Description == "" || body.Price == 0 {
+	if body.ID == nil || body.Name == nil || body.Description == nil || body.Price == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("invalid request body"))
 		return
@@ -67,7 +75,7 @@ func (h *ProductDefaultHandler) CreateProduct(w http.ResponseWriter, r *http.Req
 
 	// Process the request
 	// Create a new product
-	_, err := h.s.CreateProduct(body.ID, body.Name, body.Description, body.Price)
+	_, err := h.s.CreateProduct(*body.ID, *body.Name, *body.Description, *body.Price)
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
@@ -138,7 +146,7 @@ func (h *ProductDefaultHandler) GetProductById(w http.ResponseWriter, r *http.Re
 	w.Write(bytes)
 }
 
-// Update a product by id handler
+// Update all the product by id handler
 func (h *ProductDefaultHandler) UpdateProductById(w http.ResponseWriter, r *http.Request) {
 	// REQUEST
 	// Verify the input
@@ -153,7 +161,7 @@ func (h *ProductDefaultHandler) UpdateProductById(w http.ResponseWriter, r *http
 
 	// Update the product by id
 
-	product, err := h.s.UpdateProduct(body.ID, body.Name, body.Description, body.Price)
+	product, err := h.s.UpdateProduct(*body.ID, *body.Name, *body.Description, *body.Price)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(r.ParseForm().Error()))
@@ -173,4 +181,53 @@ func (h *ProductDefaultHandler) UpdateProductById(w http.ResponseWriter, r *http
 	}
 	w.Write(bytes)
 
+}
+
+// Update some part of the product by id handler
+func (h *ProductDefaultHandler) UpdateProductByIdPatch(w http.ResponseWriter, r *http.Request) {
+	// REQUEST
+	// Verify the input
+	var body RequestJSONPatch
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("invalid request body"))
+		return
+	}
+
+	// PROCESS
+	fmt.Println("El body es", body)
+
+	/*
+
+		// Update the product fields if they were included in the request
+		if body.Name != nil {
+			product.Name = body.Name
+		}
+		if body.Description != nil {
+			product.Description = body.Description
+		}
+		if body.Price != nil {
+			product.Price = body.Price
+		}
+		err = h.s.PatchProduct(product)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("invalid request body"))
+			return
+		}
+
+		// RESPONSE
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+
+		// marshal body to json
+		bytes, err := json.Marshal(product)
+		if err != nil {
+			// default error
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("invalid request body aca va el error"))
+			return
+		}
+		w.Write(bytes)
+	*/
 }

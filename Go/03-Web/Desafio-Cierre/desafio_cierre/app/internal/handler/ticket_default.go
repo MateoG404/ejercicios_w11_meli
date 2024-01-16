@@ -4,7 +4,6 @@ package handler
 import (
 	"desafio_cierre/app/internal/service"
 	"desafio_cierre/app/platform/response"
-	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -91,15 +90,17 @@ func (h *TicketHandler) GetTicketProportion(w http.ResponseWriter, r *http.Reque
 
 	// Use the service to get the tickets
 	proportion, err := h.sv.GetTicketProportion(country)
-	fmt.Println(proportion)
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, err.Error())
+		response.JSONResponse(w, http.StatusNotFound, err.Error())
+		return
 	}
+
 	// Create a new json response
 	jsonResponse := map[string]interface{}{
 		"proportion": proportion,
 		"country":    country,
 	}
+
 	// Create the response
 	response.JSONResponse(w, http.StatusOK, jsonResponse)
 }
