@@ -10,6 +10,7 @@ import (
 
 var (
 	ErrInvalidCountry = fmt.Errorf("invalid country format ")
+	ErrDataNotFound   = fmt.Errorf("data not found")
 )
 
 // This is the struct of the ticket service
@@ -37,7 +38,6 @@ func (s *TicketService) GetTicketsByCountry(country string) (tickets map[string]
 
 	// - Capitalize the first letter of the country
 	country = strings.Title(country)
-	fmt.Println("country", country)
 
 	// - If the country is valid, use the repository to get the tickets
 	if country == "" {
@@ -55,8 +55,40 @@ func (s *TicketService) GetTicketsByCountry(country string) (tickets map[string]
 }
 
 // Method to get the tickets from the repository and return in a slice of tickets according to the proportion input
-func (s *TicketService) GetTicketProportion() int {
-	return 0
+func (s *TicketService) GetTicketProportion(country string) (float64, error) {
+	// Bussiness logic
+
+	// - Capitalize the first letter of the country
+	country = strings.Title(country)
+
+	// - If the country is valid, use the repository to get the tickets
+	if country == "" {
+		return 0, ErrInvalidCountry
+	}
+	// Use the repository to get the tickets
+	tickets, err := s.rp.GetTicketsByCountry(country)
+	if err != nil {
+		return 0, err
+	}
+	// Use the repository to get all the tickets
+	ticketsAll, err := s.rp.GetAllTickets()
+	if err != nil {
+		return 0, err
+	}
+	fmt.Println("ticketsAll", len(ticketsAll))
+	// Calculate the proportion of tickets by country
+	if len(ticketsAll) == 0 {
+		// If there are no tickets, return an error
+		return 0, ErrDataNotFound
+	}
+	if len(tickets) == 0 {
+		// If there are no tickets, return an error
+		return 0, ErrDataNotFound
+	}
+	// Calculate the average
+	avg := float64(len(tickets)) / float64(len(ticketsAll))
+
+	return avg, nil // return proportion as a percentage
 }
 
 // Method to add, update and delete tickets from the repository

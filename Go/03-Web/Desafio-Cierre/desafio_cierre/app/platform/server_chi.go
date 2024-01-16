@@ -51,9 +51,9 @@ func (s *ServerChi) Start() error {
 	//router.Use(middleware.Logger)
 
 	// - Create the router and endpoints
-	router.Get("/tickets", hd.GetTickets)
-	router.Get("/tickets/{country}", hd.GetTicketsByCountry)
-	//router.Get("/tickets/proportion/{country}", hd.GetTicketProportion)
+	router.Get("/ticket", hd.GetTickets)
+	router.Get("/ticket/getByCountry/{country}", hd.GetTicketsByCountry)
+	router.Get("/ticket/getAverage/{country}", hd.GetTicketProportion)
 
 	// Listen the server
 	http.ListenAndServe(s.addr, router)

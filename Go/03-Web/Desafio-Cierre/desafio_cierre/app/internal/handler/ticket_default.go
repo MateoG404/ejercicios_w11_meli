@@ -69,10 +69,8 @@ func (h *TicketHandler) GetTickets(w http.ResponseWriter, r *http.Request) {
 }
 
 // This is the handler for the method GetTicketsByCountry
-
 func (h *TicketHandler) GetTicketsByCountry(w http.ResponseWriter, r *http.Request) {
 	// Process the request
-	fmt.Println("entro al handler")
 	country := chi.URLParam(r, "country")
 
 	// Use the service to get the tickets
@@ -83,4 +81,25 @@ func (h *TicketHandler) GetTicketsByCountry(w http.ResponseWriter, r *http.Reque
 		response.JSONResponse(w, http.StatusBadRequest, err.Error())
 	}
 	response.JSONResponse(w, http.StatusOK, tickets)
+}
+
+// This is the handler for the method GetTicketProportion
+
+func (h *TicketHandler) GetTicketProportion(w http.ResponseWriter, r *http.Request) {
+	// Process the request
+	country := chi.URLParam(r, "country")
+
+	// Use the service to get the tickets
+	proportion, err := h.sv.GetTicketProportion(country)
+	fmt.Println(proportion)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, err.Error())
+	}
+	// Create a new json response
+	jsonResponse := map[string]interface{}{
+		"proportion": proportion,
+		"country":    country,
+	}
+	// Create the response
+	response.JSONResponse(w, http.StatusOK, jsonResponse)
 }
