@@ -15,9 +15,7 @@ use (
 	./Go/02-Bases/Clase-05/notes/interfaces
 	./Go/02-Bases/Clase-06/code/ejercicio-3
 	./Go/02-Bases/DesafioCierre/desafio-go-bases
-	./Go/03-Web/Clase-01-API/code/ejercicio-2
-	./Go/03-Web/Clase-01-API/code/ejercicio_1
-	./Go/03-Web/Clase-01-API/notes/chi
-	./Go/03-Web/Clase-01-API/notes/context
-	./Go/03-Web/Clase-01-API/notes/http
+	./Go/03-Web/Clase-02-POST/notes/post
+	./Go/03-Web/Clase-03-PUT-PATCH-DELETE/notes/patch_put_delete
+	./Go/03-Web/Desafio-Cierre/desafio_cierre
 )
