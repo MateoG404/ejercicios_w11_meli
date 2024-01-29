@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello, world!")
 	// database
 	// config
 	Passwd := os.Getenv("PASSWORD")
