@@ -5,6 +5,7 @@ import "errors"
 var (
 	// ErrRepositoryProductNotFound is returned when a product is not found.
 	ErrRepositoryProductNotFound = errors.New("repository: product not found")
+	ErrProductExists             = errors.New("repository: product exists")
 )
 
 // RepositoryProduct is an interface that contains the methods for a product repository

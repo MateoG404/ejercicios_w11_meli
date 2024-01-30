@@ -69,7 +69,15 @@ func (s *ServerChi) Start() (err error) {
 	// Create the server
 	router := chi.NewRouter()
 
-	router.Get("/products/{id}", hd.GetById())
+	// - Add the routes
+	// Create a new route for the products
+	router.Route("/products", func(r chi.Router) {
+		// Method to get a product by id
+		r.Get("/{id}", hd.GetById())
+
+		// Method to post a product
+		r.Post("/", hd.Create())
+	})
 	// - Listen the server
 	http.ListenAndServe(s.address, router)
 	return

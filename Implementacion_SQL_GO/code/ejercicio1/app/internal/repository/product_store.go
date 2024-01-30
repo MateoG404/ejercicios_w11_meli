@@ -4,11 +4,13 @@ import (
 	"database/sql"
 	"ejercicio1/app/internal"
 	"errors"
+	"log"
 )
 
 var (
 	// ErrRepositoryProductNotFound is returned when a product is not found.
 	ErrServiceProductNotFound = errors.New("repository: product not found")
+	ErrProductExists          = errors.New("repository: product exists")
 )
 
 // Struct for the repository of the product
@@ -22,11 +24,20 @@ func (*ProductStore) Delete(id int) (err error) {
 	panic("unimplemented")
 }
 
+// VerifyOpenDB verifies if the database is opened
+func (r *ProductStore) VerifyOpenDB() (err error) {
+	// Verify if the database is opened
+	if err = r.db.Ping(); err != nil {
+		return err
+	}
+	return nil
+}
+
 // FindById implements internal.RepositoryProduct.
 func (r *ProductStore) FindById(id int) (p internal.Product, err error) {
 	// Verify if the database is opened
-	if err = r.db.Ping(); err != nil {
-		return p, err
+	if err = r.VerifyOpenDB(); err != nil {
+		return internal.Product{}, err
 	}
 
 	// Use the package database/sql to query the database
@@ -57,8 +68,40 @@ func (r *ProductStore) FindById(id int) (p internal.Product, err error) {
 }
 
 // Save implements internal.RepositoryProduct.
-func (*ProductStore) Save(p *internal.Product) (err error) {
-	panic("unimplemented")
+func (r *ProductStore) Save(p *internal.Product) (err error) {
+	// Verify if the database is opened
+	if err = r.VerifyOpenDB(); err != nil {
+		return err
+	}
+	// Use the package database/sql to query the database
+	result, err := r.db.Exec("INSERT INTO products(id, name, quantity, code_value, is_published, expiration, price) VALUES (?, ?, ?, ?, ?, ?, ?)", p.Id, p.Name, p.Quantity, p.CodeValue, p.IsPublished, p.Expiration, p.Price)
+	// Manage the error when the query fails
+	if err != nil {
+		return err
+	}
+	// Get the last inserted id (id of the product saved)
+	lastId, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+	// Set the id of the product
+	p.Id = int(lastId)
+	return nil
+}
+
+// GetLastId returns the last inserted id
+func (r *ProductStore) GetLastID() (lastId int, err error) {
+	// Verify if the database is opened
+	if err = r.VerifyOpenDB(); err != nil {
+		return 0, err
+	}
+	// Use the package database/sql to query the database
+	var lastInsertID int
+	err = r.db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&lastInsertID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return lastInsertID, nil
 }
 
 // Update implements internal.RepositoryProduct.

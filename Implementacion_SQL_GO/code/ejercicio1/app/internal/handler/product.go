@@ -3,6 +3,7 @@ package handler
 import (
 	"ejercicio1/app/internal"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -121,8 +122,17 @@ func (h *HandlerProduct) Create() http.HandlerFunc {
 			},
 		}
 		err = h.sv.Save(&p)
+		fmt.Println("El error es", err)
 		if err != nil {
-			response.JSON(w, http.StatusInternalServerError, "internal server error")
+			switch {
+			case errors.Is(err, internal.ErrProductExists):
+				response.JSON(w, http.StatusBadRequest, "product exists")
+			case errors.Is(err, internal.ErrRepositoryProductNotFound):
+				response.JSON(w, http.StatusNotFound, "product not found")
+			default:
+				response.JSON(w, http.StatusInternalServerError, "internal server error")
+			}
+
 			return
 		}
 
@@ -134,11 +144,14 @@ func (h *HandlerProduct) Create() http.HandlerFunc {
 			Quantity:    p.Quantity,
 			CodeValue:   p.CodeValue,
 			IsPublished: p.IsPublished,
-			Expiration:  p.Expiration.Format(time.DateOnly),
+			Expiration:  p.Expiration.Format(time.RFC3339), // Assuming the time format is RFC3339
 			Price:       p.Price,
 		}
-		response.JSON(w, http.StatusCreated, map[string]any{
-			"message": "success",
+
+		message := fmt.Sprintf("Product created successfully with the id: %d", p.Id)
+
+		response.JSON(w, http.StatusCreated, map[string]interface{}{
+			"message": message,
 			"data":    data,
 		})
 	}

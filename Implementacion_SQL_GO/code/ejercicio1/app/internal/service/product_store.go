@@ -39,9 +39,39 @@ func (s *ProductService) FindById(id int) (p internal.Product, err error) {
 	return product, nil
 }
 
-// Save implements internal.RepositoryProduct.
-func (*ProductService) Save(p *internal.Product) (err error) {
-	panic("unimplemented")
+// Method to validate if a product exists
+func (s *ProductService) ValidateProductExists(id int) (productExists bool) {
+
+	// Use the repository to find the product by id
+	_, err := s.repository.FindById(id)
+	if err != nil {
+		return errors.Is(err, repository.ErrServiceProductNotFound)
+	}
+	return true
+}
+
+// Save implements internal.RepositoryProduct to save a product.
+func (s *ProductService) Save(p *internal.Product) (err error) {
+	// Bussiness logic to save a product
+
+	// - Validate if some product with the same id exists
+	productExists := s.ValidateProductExists(p.Id)
+
+	// If exists, change the id to the last id + 1
+	if productExists {
+		lastID, err := s.repository.GetLastID()
+		if err != nil {
+			return err
+		}
+		p.Id = lastID + 1
+	}
+
+	// Save the product
+	err = s.repository.Save(p)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Update implements internal.RepositoryProduct.
