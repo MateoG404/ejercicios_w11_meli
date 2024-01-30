@@ -77,6 +77,9 @@ func (s *ServerChi) Start() (err error) {
 
 		// Method to post a product
 		r.Post("/", hd.Create())
+
+		// Method to put a product
+		r.Put("/{id}", hd.Update())
 	})
 	// - Listen the server
 	http.ListenAndServe(s.address, router)

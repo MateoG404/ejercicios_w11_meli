@@ -105,8 +105,17 @@ func (r *ProductStore) GetLastID() (lastId int, err error) {
 }
 
 // Update implements internal.RepositoryProduct.
-func (*ProductStore) Update(p *internal.Product) (err error) {
-	panic("unimplemented")
+func (r *ProductStore) Update(p *internal.Product) (err error) {
+	// Verify if the database is opened
+	if err = r.VerifyOpenDB(); err != nil {
+		return err
+	}
+	// Use the package database/sql to query the database
+	_, err = r.db.Exec("UPDATE products SET name = ?, quantity = ?, code_value = ?, is_published = ?, expiration = ?, price = ? WHERE id = ?", p.Name, p.Quantity, p.CodeValue, p.IsPublished, p.Expiration, p.Price, p.Id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // UpdateOrSave implements internal.RepositoryProduct.

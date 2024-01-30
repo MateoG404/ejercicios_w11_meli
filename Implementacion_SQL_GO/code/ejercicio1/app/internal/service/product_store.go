@@ -75,8 +75,23 @@ func (s *ProductService) Save(p *internal.Product) (err error) {
 }
 
 // Update implements internal.RepositoryProduct.
-func (*ProductService) Update(p *internal.Product) (err error) {
-	panic("unimplemented")
+func (s *ProductService) Update(p *internal.Product) (err error) {
+	// Bussiness logic to update a product
+
+	// - Validate if some product with the same id exists
+	productExists := s.ValidateProductExists(p.Id)
+	if !productExists {
+		return repository.ErrServiceProductNotFound
+	}
+
+	// Update the product
+
+	err = s.repository.Update(p)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*
