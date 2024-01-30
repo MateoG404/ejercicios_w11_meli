@@ -122,7 +122,6 @@ func (h *HandlerProduct) Create() http.HandlerFunc {
 			},
 		}
 		err = h.sv.Save(&p)
-		fmt.Println("El error es", err)
 		if err != nil {
 			switch {
 			case errors.Is(err, internal.ErrProductExists):
