@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	repository "ejercicio1/app/internal/repository"
 	service "ejercicio1/app/internal/service"
 
 	"github.com/bootcamp-go/web/request"
@@ -247,6 +248,8 @@ func (h *HandlerProduct) Delete() http.HandlerFunc {
 		if err != nil {
 			switch {
 			case errors.Is(err, internal.ErrRepositoryProductNotFound):
+				response.JSON(w, http.StatusNotFound, "product not found")
+			case errors.Is(err, repository.ErrServiceProductNotFound):
 				response.JSON(w, http.StatusNotFound, "product not found")
 			default:
 				response.JSON(w, http.StatusInternalServerError, "internal server error")

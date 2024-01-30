@@ -21,7 +21,21 @@ func NewProductService(repository repository.ProductStore) *ProductService {
 
 // Delete implements internal.RepositoryProduct.
 func (s *ProductService) Delete(id int) (err error) {
-	panic("unimplemented")
+	// Bussiness logic to delete a product
+
+	// - Validate if some product with the same id exists
+	productExists := s.ValidateProductExists(id)
+	if !productExists {
+		return repository.ErrServiceProductNotFound
+	}
+
+	// Call the method of the repository
+	err = s.repository.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
 
 // FindById implements internal.RepositoryProduct.

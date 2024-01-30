@@ -80,6 +80,9 @@ func (s *ServerChi) Start() (err error) {
 
 		// Method to put a product
 		r.Put("/{id}", hd.Update())
+
+		// Method to delete a product
+		r.Delete("/{id}", hd.Delete())
 	})
 	// - Listen the server
 	http.ListenAndServe(s.address, router)

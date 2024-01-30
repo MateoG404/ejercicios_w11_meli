@@ -20,8 +20,19 @@ type ProductStore struct {
 }
 
 // Delete implements internal.RepositoryProduct.
-func (*ProductStore) Delete(id int) (err error) {
-	panic("unimplemented")
+func (r *ProductStore) Delete(id int) (err error) {
+	// Verify if the database is opened
+	if err = r.VerifyOpenDB(); err != nil {
+		return err
+	}
+
+	// Use the package database/sql to query the database
+	_, err = r.db.Exec("DELETE FROM products WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // VerifyOpenDB verifies if the database is opened
