@@ -7,6 +7,7 @@ import (
 	repository "ejercicio1/app/internal/repository"
 	service "ejercicio1/app/internal/service"
 	"fmt"
+	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -60,15 +61,16 @@ func (s *ServerChi) Start() (err error) {
 	rp := repository.NewProductStore(db)
 
 	// - Create the service
-	svc := service.NewProductService(rp)
+	svc := service.NewProductService(*rp)
 
 	// - Create the handler
-	hd := handler.NewHandlerProduct(svc)
+	hd := handler.NewHandlerProduct(*svc)
 
 	// Create the server
 	router := chi.NewRouter()
 
-	router.Get("/products", hd.GetById())
+	router.Get("/products/{id}", hd.GetById())
 	// - Listen the server
+	http.ListenAndServe(s.address, router)
 	return
 }

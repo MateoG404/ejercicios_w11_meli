@@ -16,7 +16,7 @@ func main() {
 		Passwd:               Passwd,
 		Net:                  "tcp",
 		Addr:                 "localhost:3306",
-		DBName:               "melisprint",
+		DBName:               "my_db",
 		ParseTime:            true,
 		AllowNativePasswords: true,
 	}

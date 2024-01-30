@@ -7,23 +7,25 @@ import (
 	"strconv"
 	"time"
 
+	service "ejercicio1/app/internal/service"
+
 	"github.com/bootcamp-go/web/request"
 	"github.com/bootcamp-go/web/response"
 	"github.com/go-chi/chi/v5"
 )
 
-// NewHandlerProduct creates a new handler for products.
-func NewHandlerProduct(rp internal.RepositoryProduct) (h *HandlerProduct) {
-	h = &HandlerProduct{
-		rp: rp,
-	}
-	return
-}
-
 // HandlerProduct is a handler for products.
 type HandlerProduct struct {
-	// rp is the repository for products.
-	rp internal.RepositoryProduct
+	// sv is the service for products.
+	sv service.ProductService
+}
+
+// NewHandlerProduct creates a new handler for products.
+func NewHandlerProduct(sv service.ProductService) (h *HandlerProduct) {
+	h = &HandlerProduct{
+		sv: sv,
+	}
+	return
 }
 
 // ProductJSON is a product in JSON format.
@@ -47,10 +49,9 @@ func (h *HandlerProduct) GetById() http.HandlerFunc {
 			response.JSON(w, http.StatusBadRequest, "invalid id")
 			return
 		}
-
 		// process
 		// - find product by id
-		p, err := h.rp.FindById(id)
+		p, err := h.sv.FindById(id)
 		if err != nil {
 			switch {
 			case errors.Is(err, internal.ErrRepositoryProductNotFound):
@@ -119,7 +120,7 @@ func (h *HandlerProduct) Create() http.HandlerFunc {
 				Price:       body.Price,
 			},
 		}
-		err = h.rp.Save(&p)
+		err = h.sv.Save(&p)
 		if err != nil {
 			response.JSON(w, http.StatusInternalServerError, "internal server error")
 			return
@@ -143,6 +144,7 @@ func (h *HandlerProduct) Create() http.HandlerFunc {
 	}
 }
 
+/*
 // UpdateOrCreate updates or creates a product.
 func (h *HandlerProduct) UpdateOrCreate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -180,7 +182,7 @@ func (h *HandlerProduct) UpdateOrCreate() http.HandlerFunc {
 				Price:       body.Price,
 			},
 		}
-		err = h.rp.UpdateOrSave(&p)
+		err = h.sv.UpdateOrSave(&p)
 		if err != nil {
 			response.JSON(w, http.StatusInternalServerError, "internal server error")
 			return
@@ -203,7 +205,7 @@ func (h *HandlerProduct) UpdateOrCreate() http.HandlerFunc {
 		})
 	}
 }
-
+*/
 // Update updates a product.
 func (h *HandlerProduct) Update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -217,7 +219,7 @@ func (h *HandlerProduct) Update() http.HandlerFunc {
 
 		// process
 		// - find product by id
-		p, err := h.rp.FindById(id)
+		p, err := h.sv.FindById(id)
 		if err != nil {
 			switch {
 			case errors.Is(err, internal.ErrRepositoryProductNotFound):
@@ -254,7 +256,7 @@ func (h *HandlerProduct) Update() http.HandlerFunc {
 		p.IsPublished = body.IsPublished
 		p.Expiration = exp
 		p.Price = body.Price
-		err = h.rp.Update(&p)
+		err = h.sv.Update(&p)
 		if err != nil {
 			response.JSON(w, http.StatusInternalServerError, "internal server error")
 			return
@@ -291,7 +293,7 @@ func (h *HandlerProduct) Delete() http.HandlerFunc {
 
 		// process
 		// - delete product by id
-		err = h.rp.Delete(id)
+		err = h.sv.Delete(id)
 		if err != nil {
 			switch {
 			case errors.Is(err, internal.ErrRepositoryProductNotFound):
