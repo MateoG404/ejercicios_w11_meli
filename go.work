@@ -19,5 +19,6 @@ use (
 	./Go/03-Web/Clase-03-PUT-PATCH-DELETE/notes/patch_put_delete
 	./Go/03-Web/Desafio-Cierre/desafio_cierre
 	./Implementacion_SQL_GO/code/ejercicio1
+	./Implementacion_SQL_GO/code/ejercicio2/storage-api-exercise
 	./Implementacion_SQL_GO/notes/packageSQL
 )
