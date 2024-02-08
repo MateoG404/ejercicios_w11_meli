@@ -35,7 +35,6 @@ func TestWhiteSharl(t *testing.T) {
 		// Act
 		result := shark.Hunt(tuna)
 		// Assert
-		require.Nil(t, result)
 		require.Equal(t, ErrSharkIsNotHungry, result)
 	})
 
@@ -52,7 +51,6 @@ func TestWhiteSharl(t *testing.T) {
 		result := shark.Hunt(tuna)
 
 		// Assert
-		require.Nil(t, result)
 		require.Equal(t, ErrSharkIsSlower, result)
 
 	})
