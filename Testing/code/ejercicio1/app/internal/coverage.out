@@ -1,0 +1,10 @@
+mode: set
+ejercicio_ejercicio1/app/internal/tuna.go:4.52,10.2 2 1
+ejercicio_ejercicio1/app/internal/white_shark.go:17.76,24.2 2 1
+ejercicio_ejercicio1/app/internal/white_shark.go:36.51,38.15 1 1
+ejercicio_ejercicio1/app/internal/white_shark.go:38.15,41.3 2 1
+ejercicio_ejercicio1/app/internal/white_shark.go:42.2,42.13 1 1
+ejercicio_ejercicio1/app/internal/white_shark.go:42.13,45.3 2 0
+ejercicio_ejercicio1/app/internal/white_shark.go:46.2,46.26 1 1
+ejercicio_ejercicio1/app/internal/white_shark.go:46.26,49.3 2 1
+ejercicio_ejercicio1/app/internal/white_shark.go:52.2,54.8 3 0
