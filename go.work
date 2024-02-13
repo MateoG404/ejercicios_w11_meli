@@ -21,4 +21,6 @@ use (
 	./Implementacion_SQL_GO/code/ejercicio1
 	./Implementacion_SQL_GO/code/ejercicio2/storage-api-exercise
 	./Implementacion_SQL_GO/notes/packageSQL
+	./Testing/code/ejercicio1
+	./Testing/code/ejercicio2_repo/testing-exercise
 )
