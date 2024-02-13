@@ -2,7 +2,6 @@ package simulator
 
 import "ejercicio3/positioner"
 
-// Subject is a struct that represents a subject
 type Subject struct {
 	// position of the subject
 	Position *positioner.Position
