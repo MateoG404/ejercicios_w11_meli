@@ -98,3 +98,63 @@ func TestWhiteSharkHunt(t *testing.T) {
 		require.Equal(t, expMockCallCanCatch, sm.Calls.CanCatch)
 	})
 }
+
+// Test for CreateWhiteShark
+func TestCreateWhiteShark(t *testing.T) {
+
+	// Case 1 : Sucessful creation of a WhiteShark with default speed
+	t.Run("Case 1 : Sucessful creation of a WhiteShark with default speed", func(t *testing.T) {
+		// Arrange
+		// - Create a CatchSimulatorMock
+		simulator := simulator.NewCatchSimulatorMock()
+
+		// Act
+		// .- Create a WhiteShark with Default speed
+		hunter := hunter.CreateWhiteShark(simulator)
+
+		// Assert
+		// -Get the speed of the WhiteShark
+		speed := hunter.GetSpeed()
+		require.True(t, 15.0 <= speed && speed <= 159.0, "speed is not between 15 and 159")
+	})
+
+	// Case 2 : Sucessful creation of a WhiteShark with default position
+	t.Run("Case 2 : Sucessful creation of a WhiteShark with default position", func(t *testing.T) {
+		// Arrange
+		// - Create a CatchSimulatorMock
+		simulator := simulator.NewCatchSimulatorMock()
+
+		// Act
+		// - Create a WhiteShark with Default position
+		hunter := hunter.CreateWhiteShark(simulator)
+
+		// Assert
+		// - Get the position of the WhiteShark
+		position := hunter.GetPosition()
+		require.True(t, 0.0 <= position.X && position.X <= 500 && 0.0 <= position.Y && position.Y <= 500 && 0.0 <= position.Z && position.Z <= 500, "position is not between 0 and 500")
+	})
+
+	// Case 3 : Sucessful creation of a WhiteShark with default speed and position
+	t.Run("Case 3 : Sucessful creation of a WhiteShark with default speed and position", func(t *testing.T) {
+		// Arrange
+		// - Create a CatchSimulatorMock
+		simulator := simulator.NewCatchSimulatorMock()
+
+		// Act
+		// - Create a WhiteShark with Default speed and position
+		hunter := hunter.CreateWhiteShark(simulator)
+
+		// Assert
+		// - Get the speed of the WhiteShark
+		speed := hunter.GetSpeed()
+		// - Get the position of the WhiteShark
+		position := hunter.GetPosition()
+
+		// Assert
+		// - Check that the speed is between 15 and 159
+		require.True(t, 15.0 <= speed && speed <= 159.0, "speed is not between 15 and 159")
+		// - Check that the position is between 0 and 500
+		require.True(t, 0.0 <= position.X && position.X <= 500 && 0.0 <= position.Y && position.Y <= 500 && 0.0 <= position.Z && position.Z <= 500, "position is not between 0 and 500")
+	})
+
+}
