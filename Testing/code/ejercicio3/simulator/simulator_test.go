@@ -102,3 +102,55 @@ func TestCatchSimulator(t *testing.T) {
 		require.False(t, canCatch)
 	})
 }
+
+// TestMock tests the mock
+func TestMockSimulator(t *testing.T) {
+	// Case 1: Successful creation mock
+	t.Run("Case 1: Successful creation mock", func(t *testing.T) {
+
+		// Arrange
+		// ...
+		// Act
+		// - Create a mock of the positioner
+		mockSimulator := NewCatchSimulatorMock()
+
+		// Assert
+
+		require.NotNil(t, mockSimulator, "The mock simulator should not be nil")
+	})
+	// Case 2: Successful creation mock and used the CanCatch method to return the one time that was called the method
+	t.Run("Case 2: Successful creation mock and used the CanCatch method to return the times that the hunter can catch the prey", func(t *testing.T) {
+		// Arrange
+		// - Create and set the prey and hunter
+
+		prey := &Subject{
+			Position: &positioner.Position{
+				X: 1,
+				Y: 1,
+				Z: 1,
+			}, Speed: 1}
+		hunter := &Subject{
+			Position: &positioner.Position{
+				X: 0,
+				Y: 0,
+				Z: 0,
+			}, Speed: 10}
+
+		// - Create a mock of the simulator
+		simulator := NewCatchSimulatorMock()
+		simulator.CanCatchFunc = func(hunter, prey *Subject) bool {
+
+			return true
+		}
+
+		// Act
+
+		_ = simulator.CanCatch(hunter, prey)
+
+		// Assert
+
+		require.Equal(t, 1, simulator.Calls.CanCatch)
+
+	})
+
+}

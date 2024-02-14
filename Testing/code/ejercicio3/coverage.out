@@ -12,8 +12,8 @@ ejercicio3/hunter/hunter_white_shark.go:81.54,84.3 2 1
 ejercicio3/hunter/hunter_white_shark.go:86.2,86.8 1 1
 ejercicio3/positioner/positioner_default.go:6.61,9.2 2 1
 ejercicio3/positioner/positioner_default.go:15.92,23.2 5 1
-ejercicio3/positioner/positioner_stub.go:4.55,7.2 2 0
-ejercicio3/positioner/positioner_stub.go:17.89,20.2 2 0
+ejercicio3/positioner/positioner_stub.go:4.55,7.2 2 1
+ejercicio3/positioner/positioner_stub.go:17.89,20.2 2 1
 ejercicio3/positioner/positioner_stub.go:23.74,26.2 2 0
 ejercicio3/prey/prey_stub.go:6.37,9.2 2 1
 ejercicio3/prey/prey_stub.go:20.47,22.2 1 0
@@ -24,5 +24,5 @@ ejercicio3/prey/prey_tuna.go:43.43,47.2 2 1
 ejercicio3/prey/prey_tuna.go:49.62,52.2 2 1
 ejercicio3/simulator/simulator_default.go:6.96,11.2 1 1
 ejercicio3/simulator/simulator_default.go:22.75,32.2 4 1
-ejercicio3/simulator/simulator_mock.go:4.62,7.2 2 0
-ejercicio3/simulator/simulator_mock.go:22.78,27.2 2 0
+ejercicio3/simulator/simulator_mock.go:4.62,7.2 2 1
+ejercicio3/simulator/simulator_mock.go:22.78,27.2 2 1

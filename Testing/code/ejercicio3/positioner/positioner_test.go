@@ -2,6 +2,7 @@
 package positioner
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -105,6 +106,39 @@ func TestNewPositionerStub(t *testing.T) {
 		// Assert
 		// Check the positioner is not nil
 		require.NotNil(t, positioner, "The positioner is not nil")
+
+	})
+}
+
+// Test GetLinearDistanceMock test the simualtor mock
+
+func TestGetLinearPositionerStub(t *testing.T) {
+	// Case 1 : Sucessful creation of GetLinearDistanceMock
+	t.Run("Case 1 : Sucessful creation of GetLinearDistanceMock", func(t *testing.T) {
+		// Arrange
+		// - Creation PositionerStub
+		positioner := NewPositionerStub()
+
+		// - Set the from and to values
+		from := &Position{
+			X: 1,
+			Y: 1,
+			Z: 1,
+		}
+		to := &Position{
+			X: 0,
+			Y: 0,
+			Z: 0}
+
+		// Act
+		// - Calls the GetLinearDistanceMock method
+		positioner.GetLinearDistanceFunc = func(from, to *Position) float64 {
+			return math.Sqrt(3)
+		}
+		linearDistance := positioner.GetLinearDistance(from, to)
+		// Assert
+		expectedDistance := math.Sqrt(3) // La distancia esperada es la raíz cuadrada de 3
+		require.Equal(t, expectedDistance, linearDistance)
 
 	})
 }
