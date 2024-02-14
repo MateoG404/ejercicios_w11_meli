@@ -156,5 +156,23 @@ func TestCreateWhiteShark(t *testing.T) {
 		// - Check that the position is between 0 and 500
 		require.True(t, 0.0 <= position.X && position.X <= 500 && 0.0 <= position.Y && position.Y <= 500 && 0.0 <= position.Z && position.Z <= 500, "position is not between 0 and 500")
 	})
+}
 
+// Test for HunterStubs
+
+func TestHunterStub(t *testing.T) {
+	// Case 1 : Sucessful creation of a HunterStub
+	t.Run("Case 1 : Sucessful creation of a HunterStub ", func(t *testing.T) {
+		// Arrange
+		// ...
+
+		// Act
+		// - Create a HunterStub
+		hunter := hunter.NewHunterStub()
+		// Assert
+		// - Get the speed of the HunterStub
+		require.NotNil(t, hunter, "HunterStub is not created")
+		require.Nil(t, hunter.GetSpeedFunc, "GetSpeedFunc is not nil")
+		require.Nil(t, hunter.GetPositionFunc, "GetPositionFunc is not nil")
+	})
 }
