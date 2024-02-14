@@ -54,6 +54,16 @@ type WhiteShark struct {
 	simulator simulator.CatchSimulator
 }
 
+// GetPosition implements Hunter.
+func (w *WhiteShark) GetPosition() (position *positioner.Position) {
+	return w.position
+}
+
+// GetSpeed implements Hunter.
+func (w *WhiteShark) GetSpeed() (speed float64) {
+	return w.speed
+}
+
 func (w *WhiteShark) Hunt(prey prey.Prey) (err error) {
 	// get the position of the prey
 	preySubject := &simulator.Subject{

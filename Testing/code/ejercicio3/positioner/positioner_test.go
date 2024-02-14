@@ -90,3 +90,21 @@ func TestGetLinearDistance(t *testing.T) {
 		require.Equal(t, 3.0, linearDistance)
 	})
 }
+
+// Test the NewPositionerStub method
+func TestNewPositionerStub(t *testing.T) {
+	// Case 1 : Sucessful creation of a PositionerStub
+	t.Run("Case 1 : Sucessful creation of a PositionerStub", func(t *testing.T) {
+		// Arrange
+		// ...
+
+		// Act
+		// Creation a new PositionerStub
+		positioner := NewPositionerStub()
+
+		// Assert
+		// Check the positioner is not nil
+		require.NotNil(t, positioner, "The positioner is not nil")
+
+	})
+}

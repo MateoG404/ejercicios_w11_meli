@@ -78,3 +78,23 @@ func TestGetPosition(t *testing.T) {
 		require.Equal(t, 100.0, position.X, "The position is not default")
 	})
 }
+
+// TestPreyStub tests the PreyStub method
+func TestPreyStub(t *testing.T) {
+
+	// Case 1 : Succesful creation of a PreyStub
+	t.Run("Case 1 : Succesful creation of a PreyStub", func(t *testing.T) {
+		// Arrange
+		// ...
+
+		// Act
+
+		// - Creation of a PreyStub
+		prey := NewPreyStub()
+
+		// Assert
+		// - Check that the PreyStub is not nil
+		require.NotNil(t, prey, "The PreyStub is nil")
+
+	})
+}
