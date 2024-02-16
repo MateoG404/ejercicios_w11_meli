@@ -13,7 +13,7 @@ import (
 
 // Test for Hunter ConfigurePrey handler
 
-func TestHanlerConfigurePreyHandler(t *testing.T) {
+func TestHandlerConfigurePreyHandler(t *testing.T) {
 
 	// Case 1 : Success configuration of a prey for the hunter handler with a status code 200 and message "Prey configured"
 	t.Run("Success configuration of a prey for the hunter handler with a status code 200 and message \"Prey configured\"", func(t *testing.T) {
@@ -63,4 +63,49 @@ func TestHanlerConfigurePreyHandler(t *testing.T) {
 		expectedContentType := "application/json"
 		require.Equal(t, expectedContentType, response.Header().Get("Content-Type"))
 	})
+
+	// Case 2 : Fail configuration of a prey for the hunter handler with a status code 400 and message "Bad request" created by incorrect JSON format
+	t.Run("Fail configuration of a prey for the hunter handler with a status code 400 and message \"Bad request\"", func(t *testing.T) {
+		// Arrange
+		// - Set the prey to use in the hunter handler
+		prey := prey.NewPreyStub()
+
+		// - Set the handler
+		hd := handler.NewHunter(nil, prey)
+
+		// - Set HandlerFunc for the handler
+		hdFunc := hd.ConfigurePrey() // This will be tested
+		// - Set the body
+		body := "invalid request body"
+		// Act
+		// - Create the request
+		request := httptest.NewRequest("POST", "/", strings.NewReader(body))
+		// - Configure the header Content-Type as application/json
+		request.Header.Set("Content-Type", "application/json")
+
+		// - Set the response recorder
+		response := httptest.NewRecorder()
+
+		// - Execute the handler
+		hdFunc(response, request)
+
+		// Assert
+		// - Check if the status code is 400
+		expectedCode := 400
+		require.Equal(t, expectedCode, response.Code)
+
+		// - Check if the message is "Bad request"
+		expectedMessage := `{"message":"invalid request body", "status":"Bad Request"}`
+		require.JSONEq(t, expectedMessage, response.Body.String())
+
+		// - Check Header Content-Type is application/json
+		expectedContentType := "application/json"
+		require.Equal(t, expectedContentType, response.Header().Get("Content-Type"))
+	})
+}
+
+// Test for Hunter ConfigureHunter handler
+
+func TestHandlerConfigureHunter(t *testing.T) {
+
 }
