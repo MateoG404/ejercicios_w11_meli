@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"app/app/web/request"
 	"ejercicio4/internal/hunter"
 	"ejercicio4/internal/positioner"
 	"ejercicio4/internal/prey"
+	"ejercicio4/platform/web/response"
 	"net/http"
 )
 
@@ -30,10 +32,28 @@ type RequestBodyConfigPrey struct {
 func (h *Hunter) ConfigurePrey() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// request
+		// - Get the RequestBodyConfigPrey struct from the request body
+		var body RequestBodyConfigPrey
+
+		// - Deserialize the RequestBodyConfigPrey struct
+		err := request.JSON(r, &body)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Bad request"))
+			return
+		}
 
 		// process
+		// - Configure the prey
+		h.pr.Configure(body.Speed, body.Position)
 
 		// response
+		// - Set the status code 200 and Set the message "Prey configured"
+
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "prey configured",
+			"data":    nil,
+		})
 	}
 }
 
