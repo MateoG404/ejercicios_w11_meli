@@ -3,6 +3,7 @@ package handler_test
 
 import (
 	"ejercicio4/internal/handler"
+	"ejercicio4/internal/hunter"
 	"ejercicio4/internal/prey"
 	"net/http/httptest"
 	"strings"
@@ -107,5 +108,86 @@ func TestHandlerConfigurePreyHandler(t *testing.T) {
 // Test for Hunter ConfigureHunter handler
 
 func TestHandlerConfigureHunter(t *testing.T) {
+	// Case 1 : Success configuration of a hunter handler with a status code 200 and message "Hunter configured"
+	t.Run("Success configuration of a hunter handler with a status code 200 and message \"Hunter configured\"", func(t *testing.T) {
+		// Arrange
+		// - Set the hunter to use in the hunter handler
+		hunter := hunter.NewHunterMock()
 
+		// - Set Hunter Handler
+		hd := handler.NewHunter(hunter, nil)
+
+		// - Set HandlerFunc for the handler. (This will be tested)
+		hdFunc := hd.ConfigureHunter()
+		// - Set body
+		body := `{
+			"speed": 10.0,
+			"position": {
+				"x": 10.0,
+				"y": 10.0,
+				"z": 10.0
+			}
+		}`
+		// Act
+		// - Create the request
+		request := httptest.NewRequest("POST", "/configure-hunter", strings.NewReader(body))
+
+		// - Configure the header Content-Type as application/json
+		request.Header.Set("Content-Type", "application/json")
+
+		// - Set the response recorder
+		response := httptest.NewRecorder()
+
+		// - Execute the handler using the handler function
+		hdFunc(response, request)
+
+		// Assert
+		// - Check if the status code is 200
+		expectedCode := 200
+		require.Equal(t, expectedCode, response.Code)
+
+		// - Check if the message is "Hunter configured"
+		expectedMessage := `{"message":"hunter configured","data":null}`
+		require.JSONEq(t, expectedMessage, response.Body.String())
+
+		// - Check Header Content-Type is application/json
+		expectedContentType := "application/json"
+		require.Equal(t, expectedContentType, response.Header().Get("Content-Type"))
+	})
+
+	// Case 2 : Fail configuration of a hunter handler with a status code 400 and message "Bad request" created by incorrect JSON format
+	t.Run("Fail configuration of a hunter handler with a status code 400 and message \"Bad request\"", func(t *testing.T) {
+		// Arrange
+		// - Set the hunter to use in the hunter handler
+		hunter := hunter.NewHunterMock()
+
+		// - Set the handler with the hunter
+		handler := handler.NewHunter(hunter, nil)
+
+		// - Set HandlerFunc for the handler
+		handlerFunc := handler.ConfigureHunter() // This will be tested
+
+		// - Set the body
+		body := "invalid request body"
+
+		// Act
+		// - Create the request
+		request := httptest.NewRequest("POST", "/configure-hunter", strings.NewReader(body))
+
+		// - Configure the header Content-Type as application/json
+		request.Header.Set("Content-Type", "application/json")
+
+		// - Set the response recorder
+		response := httptest.NewRecorder()
+
+		// - Execute the handler using the handler function
+		handlerFunc(response, request)
+
+		// Assert
+		// - Check if the status code is 400
+
+		// - Check if the message is "Bad request"
+
+		// - Check Header Content-Type is application/json
+	})
 }
