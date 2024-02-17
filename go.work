@@ -24,4 +24,5 @@ use (
 	./Testing/code/ejercicio1
 	./Testing/code/ejercicio2/testing-exercise
 	./Testing/code/ejercicio3
+	./Testing/code/ejercicio4
 )
