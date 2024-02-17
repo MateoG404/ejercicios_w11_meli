@@ -6,6 +6,7 @@ import (
 	"ejercicio4/internal/positioner"
 	"ejercicio4/internal/prey"
 	"ejercicio4/platform/web/response"
+	"errors"
 	"net/http"
 )
 
@@ -38,8 +39,7 @@ func (h *Hunter) ConfigurePrey() http.HandlerFunc {
 		// - Deserialize the RequestBodyConfigPrey struct
 		err := request.JSON(r, &body)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Bad request"))
+			response.Error(w, http.StatusBadRequest, "invalid request body")
 			return
 		}
 
@@ -67,10 +67,24 @@ type RequestBodyConfigHunter struct {
 func (h *Hunter) ConfigureHunter() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// request
+		// - Get the RequestBodyConfigHunter struct from the request body
+		var requestBody RequestBodyConfigHunter
+		err := request.JSON(r, &requestBody)
+		if err != nil {
+			response.Error(w, http.StatusBadRequest, "invalid request body")
+			return
+		}
 
 		// process
+		// - Configure the hunter
+		h.ht.Configure(requestBody.Speed, requestBody.Position)
 
 		// response
+		// - Set the status code 200 and Set the message "Hunter configured"
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "hunter configured",
+			"data":    nil,
+		})
 	}
 }
 
@@ -78,9 +92,26 @@ func (h *Hunter) ConfigureHunter() http.HandlerFunc {
 func (h *Hunter) Hunt() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// request
+		// ...
 
 		// process
+		// - hunt
+		duration, err := h.ht.Hunt(h.pr)
+		if err != nil {
+			if !errors.Is(err, hunter.ErrCanNotHunt) {
+				response.Error(w, http.StatusInternalServerError, "internal server error")
+				return
+			}
+		}
+		ok := err == nil
 
 		// response
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "hunt done",
+			"data": map[string]any{
+				"success":  ok,
+				"duration": duration,
+			},
+		})
 	}
 }

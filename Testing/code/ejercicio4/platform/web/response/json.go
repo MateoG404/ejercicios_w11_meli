@@ -12,7 +12,7 @@ func JSON(w http.ResponseWriter, code int, body any) {
 		w.WriteHeader(code)
 		return
 	}
-	
+
 	// marshal body
 	bytes, err := json.Marshal(body)
 	if err != nil {

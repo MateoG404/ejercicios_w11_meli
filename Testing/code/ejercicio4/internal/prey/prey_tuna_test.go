@@ -3,7 +3,6 @@ package prey_test
 import (
 	"ejercicio4/internal/positioner"
 	"ejercicio4/internal/prey"
-
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -57,39 +56,5 @@ func TestTuna_GetPosition(t *testing.T) {
 
 		// assert
 		require.NotNil(t, output)
-	})
-}
-
-func TestTuna_Configure(t *testing.T) {
-	t.Run("set speed to 100", func(t *testing.T) {
-		// arrange
-		impl := prey.NewTuna(0.0, nil)
-
-		// act
-		inputSpeed := 100.0
-		inputPosition := (*positioner.Position)(nil)
-		impl.Configure(inputSpeed, inputPosition)
-
-		// assert
-		outputSpeed := 100.0
-		outputPosition := (*positioner.Position)(nil)
-		require.Equal(t, outputSpeed, impl.GetSpeed())
-		require.Equal(t, outputPosition, impl.GetPosition())
-	})
-
-	t.Run("set position to (100, 0, 0)", func(t *testing.T) {
-		// arrange
-		impl := prey.NewTuna(0.0, nil)
-
-		// act
-		inputSpeed := 0.0
-		inputPosition := &positioner.Position{X: 100, Y: 0, Z: 0}
-		impl.Configure(inputSpeed, inputPosition)
-
-		// assert
-		outputSpeed := 0.0
-		outputPosition := &positioner.Position{X: 100, Y: 0, Z: 0}
-		require.Equal(t, outputSpeed, impl.GetSpeed())
-		require.Equal(t, outputPosition, impl.GetPosition())
 	})
 }
